@@ -1,0 +1,144 @@
+﻿@model IEnumerable<HotelManagement.Models.Room>
+
+@{
+    ViewData["Title"] = "Available Rooms";
+    Layout = "_Layout";
+}
+
+<!-- ✅ Google Fonts & Bootstrap -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #dbeafe, #eff6ff);
+        min-height: 100vh;
+    }
+
+    .room-card {
+        background: #fff;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .room-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+        }
+
+    .room-img {
+        width: 100%;
+        height: 230px;
+        object-fit: cover;
+        border-bottom: 3px solid #0d6efd;
+    }
+
+    .card-body {
+        flex: 1;
+        padding: 18px;
+    }
+
+    .room-title {
+        font-weight: 700;
+        color: #0d47a1;
+        margin-bottom: 8px;
+    }
+
+    .room-details {
+        color: #444;
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+
+    .price-tag {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1565c0;
+    }
+
+    .rating-stars {
+        color: #ffc107;
+        font-size: 16px;
+    }
+
+    .btn-book {
+        width: 100%;
+        background: linear-gradient(135deg, #007bff, #0056d6);
+        border: none;
+        color: #fff;
+        border-radius: 12px;
+        padding: 10px;
+        font-weight: 600;
+        transition: 0.3s ease;
+    }
+
+        .btn-book:hover {
+            background: linear-gradient(135deg, #0056d6, #003d99);
+            transform: scale(1.03);
+        }
+
+    .page-title {
+        text-align: center;
+        font-weight: 700;
+        color: #003c8f;
+        margin: 40px 0 30px;
+    }
+
+    .no-room {
+        margin-top: 80px;
+        text-align: center;
+        color: #666;
+        font-size: 18px;
+    }
+</style>
+
+<div class="container">
+    <h2 class="page-title">Available Rooms</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="no-room">
+            <img src="https://cdn-icons-png.flaticon.com/512/6195/6195699.png" width="120" class="mb-3" />
+            <p>No rooms available right now.<br />Please check back later.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var room in Model)
+            {
+                var img = string.IsNullOrEmpty(room.ImageUrl)
+                ? "https://cdn-icons-png.flaticon.com/512/628/628283.png"
+                : $"{room.ImageUrl}?auto=format&fit=crop&w=800&q=80";
+
+                <div class="col-md-4 mb-4 d-flex">
+                    <div class="room-card w-100">
+                        <img src="@img" alt="@room.Name" class="room-img" />
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="room-title">@room.Name</h5>
+                            <p class="room-details"><b>Type:</b> @room.Type</p>
+                            <p class="room-details"><b>Room No:</b> @room.RoomNumber</p>
+                            <p class="room-details price-tag">₹@room.PricePerNight / night</p>
+                            <p class="text-muted small flex-grow-1">@room.Description</p>
+
+                            @if (room.AverageRating > 0)
+                            {
+                                <p class="rating-stars">
+                                    ⭐ @room.AverageRating.ToString("0.0") / 5
+                                </p>
+                            }
+
+                            <a href="/Rooms/Book?roomId=@room.Id" class="btn-book mt-3">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

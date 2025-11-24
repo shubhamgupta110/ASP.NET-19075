@@ -1,0 +1,62 @@
+﻿@model IEnumerable<HotelManagement.Models.Booking>
+@{
+    ViewData["Title"] = "My Bookings";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-primary">My Bookings</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            You have no bookings yet.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle text-center shadow-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Room No</th>
+                        <th>Room Type</th>
+                        <th>Check-In</th>
+                        <th>Check-Out</th>
+                        <th>Guests</th>
+                        <th>Amount</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var booking in Model)
+                    {
+                        <tr>
+                            <td>@(booking?.RoomNumber ?? "-")</td>
+                            <td>@(booking?.RoomType ?? "-")</td>
+                            <td>@(booking?.CheckInDate.ToShortDateString() ?? "-")</td>
+                            <td>@(booking?.CheckOutDate.ToShortDateString() ?? "-")</td>
+                            <td>@(booking?.Guests.ToString() ?? "-")</td>
+                            <td>₹@(booking?.TotalAmount.ToString("0.00") ?? "0.00")</td>
+                            <td>
+                                @if (booking?.PaymentStatus == "Paid")
+                                {
+                                    <span class="badge bg-success">Paid</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="badge @(booking?.Status == "Cancelled" ? "bg-danger" : "bg-info")">
+                                    @(booking?.Status ?? "Booked")
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

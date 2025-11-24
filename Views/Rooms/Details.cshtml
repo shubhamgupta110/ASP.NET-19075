@@ -1,0 +1,45 @@
+﻿@model HotelManagement.Models.Room
+
+@{
+    ViewData["Title"] = "Room Details";
+}
+
+<style>
+    .room-details-container {
+        margin: 50px auto;
+        max-width: 800px;
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    img {
+        width: 100%;
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+
+    .btn-book {
+        background-color: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+    }
+
+        .btn-book:hover {
+            background-color: #218838;
+        }
+</style>
+
+<div class="room-details-container">
+    <img src="@Model.ImageUrl" alt="Room Image" />
+    <h2>@Model.Type Room</h2>
+    <p>@Model.Description</p>
+    <p><strong>Room Number:</strong> @Model.RoomNumber</p>
+    <p><strong>Price Per Night:</strong> ₹@Model.PricePerNight</p>
+    <p><strong>Availability:</strong> @(Model.IsAvailable ? "Available" : "Booked")</p>
+
+    <a asp-controller="Bookings" asp-action="Create" asp-route-roomId="@Model.Id" class="btn-book">Book This Room</a>
+</div>

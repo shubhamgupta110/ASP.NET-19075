@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "User Registration";
+    Layout = "_Layout";
+}
+
+<div class="container" style="max-width:420px;margin-top:60px;">
+    <div class="card shadow p-4 rounded-3">
+        <h2 class="text-center mb-4 text-success">User Registration</h2>
+
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success">@ViewBag.Message</div>
+        }
+
+        <form id="registerForm" method="post" asp-action="Register" asp-controller="User">
+            <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-control" name="Name" placeholder="Enter your name" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" name="Email" placeholder="Enter your email" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" class="form-control" name="Password" placeholder="Enter password" required />
+            </div>
+
+            <!-- ✅ Phone number field -->
+            <div class="mb-3">
+                <label class="form-label">Phone Number</label>
+                <input type="text"
+                       class="form-control"
+                       name="Phone"
+                       id="Phone"
+                       maxlength="10"
+                       placeholder="Enter 10-digit phone number"
+                       required />
+                <div id="phoneError" class="text-danger mt-1" style="display:none;">
+                    ⚠ Please enter a valid 10-digit phone number.
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Register</button>
+        </form>
+
+        <p class="text-center mt-3">
+            Already have an account? <a asp-action="Login" asp-controller="User">Login here</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const phoneInput = document.getElementById("Phone");
+            const phoneError = document.getElementById("phoneError");
+            const form = document.getElementById("registerForm");
+
+            // Allow only digits and limit to 10 characters
+            phoneInput.addEventListener("input", function () {
+                this.value = this.value.replace(/[^0-9]/g, ''); // remove non-numeric
+                if (this.value.length > 10) {
+                    this.value = this.value.slice(0, 10);
+                }
+                phoneError.style.display = "none";
+            });
+
+            // Validate before submit
+            form.addEventListener("submit", function (e) {
+                if (phoneInput.value.length !== 10) {
+                    e.preventDefault();
+                    phoneError.style.display = "block";
+                    phoneInput.focus();
+                }
+            });
+        });
+    </script>
+}

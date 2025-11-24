@@ -1,0 +1,48 @@
+﻿@model HotelManagement.Models.Room
+
+@{
+    ViewData["Title"] = "Edit Room";
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Edit Room</h2>
+
+    <form asp-action="Edit" method="post" class="mx-auto" style="max-width: 500px;">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="mb-3">
+            <label asp-for="RoomNumber" class="form-label">Room Number</label>
+            <input asp-for="RoomNumber" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Type" class="form-label">Room Type</label>
+            <select asp-for="Type" class="form-select">
+                <option>Single</option>
+                <option>Double</option>
+                <option>Deluxe</option>
+                <option>Suite</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PricePerNight" class="form-label">Price per Night (₹)</label>
+            <input asp-for="PricePerNight" class="form-control" type="number" min="0" step="0.01" required />
+        </div>
+
+        <div class="mb-3 form-check">
+            <input asp-for="IsAvailable" class="form-check-input" />
+            <label asp-for="IsAvailable" class="form-check-label">Available</label>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+    </form>
+</div>
